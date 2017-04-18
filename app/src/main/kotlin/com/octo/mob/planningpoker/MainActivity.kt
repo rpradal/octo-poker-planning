@@ -29,11 +29,9 @@ class MainActivity : AppCompatActivity(), CardClickListener {
     }
 
     override fun onClick(drawableRes: Int, view: ImageView) {
-        //selectedCardImageView.setImageDrawable(ContextCompat.getDrawable(this, drawableRes))
-        //backCardImageView.visibility = View.VISIBLE
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, "transition")
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, getString(R.string.selected_card_transition_name))
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("FOO", drawableRes)
+        intent.putExtra(DetailActivity.SELECTED_CARD_BUNDLE_KEY, drawableRes)
         startActivity(intent, options.toBundle())
     }
 }
