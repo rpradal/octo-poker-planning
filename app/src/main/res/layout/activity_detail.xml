@@ -9,9 +9,21 @@
         android:id="@+id/bigCardImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="48dp"
         android:layout_centerInParent="true"
+        android:layout_margin="48dp"
         android:transitionName="selected_card"
+        tools:targetApi="lollipop" />
+
+
+    <ImageView
+        android:id="@+id/backCardImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_margin="48dp"
+        android:src="@drawable/back"
+        android:rotationY="90"
+        android:alpha="0"
         tools:targetApi="lollipop" />
 
 </RelativeLayout>
