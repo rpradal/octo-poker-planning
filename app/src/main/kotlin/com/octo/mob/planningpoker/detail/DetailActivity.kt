@@ -20,7 +20,8 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         val SELECTED_CARD_BUNDLE_KEY = "SELECTED_CARD_BUNDLE_KEY"
-        val ROTATION_ANITION_DURATION_MILLI = 300L
+        val ROTATION_ANIMATION_DURATION_MILLI = 300L
+        val ROTATING_VIEW_CAMERA_DISTANCE = 10000F
 
         fun getIntent(context: Context, selectedDrawableRes: Int): Intent {
             val intent = Intent(context, DetailActivity::class.java)
@@ -40,6 +41,9 @@ class DetailActivity : AppCompatActivity() {
         } else {
             getShowBackAnimator().start()
         }
+
+        bigCardImageView.cameraDistance = ROTATING_VIEW_CAMERA_DISTANCE
+        backCardImageView.cameraDistance = ROTATING_VIEW_CAMERA_DISTANCE
 
     }
 
@@ -62,10 +66,10 @@ class DetailActivity : AppCompatActivity() {
         val animatorSet = AnimatorSet()
 
         val hideBackRotationAnimator = ObjectAnimator.ofFloat(backCardImageView, "rotationY", 0f, -90f)
-        hideBackRotationAnimator.duration = ROTATION_ANITION_DURATION_MILLI
+        hideBackRotationAnimator.duration = ROTATION_ANIMATION_DURATION_MILLI
 
         val showFrontRotationAnimator = ObjectAnimator.ofFloat(bigCardImageView, "rotationY", 90f, 0f)
-        showFrontRotationAnimator.duration = ROTATION_ANITION_DURATION_MILLI
+        showFrontRotationAnimator.duration = ROTATION_ANIMATION_DURATION_MILLI
 
         animatorSet.playSequentially(hideBackRotationAnimator, showFrontRotationAnimator)
         animatorSet.addListener(ClickDesactivatorAnimatorListener())
@@ -79,13 +83,13 @@ class DetailActivity : AppCompatActivity() {
         val animatorSet = AnimatorSet()
 
         val hideFrontRotationAnimator = ObjectAnimator.ofFloat(bigCardImageView, "rotationY", 0f, -90f)
-        hideFrontRotationAnimator.duration = ROTATION_ANITION_DURATION_MILLI
+        hideFrontRotationAnimator.duration = ROTATION_ANIMATION_DURATION_MILLI
 
         val showBack = ObjectAnimator.ofFloat(backCardImageView, "alpha", 0f, 1f)
         showBack.duration = 0
 
         val showBackRotationAnimation = ObjectAnimator.ofFloat(backCardImageView, "rotationY", 90f, 0f)
-        showBackRotationAnimation.duration = ROTATION_ANITION_DURATION_MILLI
+        showBackRotationAnimation.duration = ROTATION_ANIMATION_DURATION_MILLI
 
         animatorSet.playSequentially(hideFrontRotationAnimator, showBack, showBackRotationAnimation)
         animatorSet.addListener(ClickDesactivatorAnimatorListener())
