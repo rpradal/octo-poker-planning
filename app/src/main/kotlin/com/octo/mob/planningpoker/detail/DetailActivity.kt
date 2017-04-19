@@ -44,13 +44,17 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val showFrontAnimator = getShowFrontAnimator()
-        showFrontAnimator.addListener(object : BaseAnimatorListener() {
-            override fun onAnimationEnd(p0: Animator?) {
-                finishAfterTransitionCompat()
-            }
-        })
-        showFrontAnimator.start()
+        if (bigCardImageView.rotationY != 0F) {
+            val showFrontAnimator = getShowFrontAnimator()
+            showFrontAnimator.addListener(object : BaseAnimatorListener() {
+                override fun onAnimationEnd(p0: Animator?) {
+                    finishAfterTransitionCompat()
+                }
+            })
+            showFrontAnimator.start()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     private fun getShowFrontAnimator(): Animator {
