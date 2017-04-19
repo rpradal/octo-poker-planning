@@ -3,29 +3,28 @@ package com.octo.mob.planningpoker.list
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.octo.mob.planningpoker.R
 
 class CardsAdapter(val cardClickListener: CardClickListener) : RecyclerView.Adapter<CardViewHolder>() {
 
-    val fibonacciCardResources = listOf(
-            R.drawable.fibonacci_1,
-            R.drawable.fibonacci_2,
-            R.drawable.fibonacci_3,
-            R.drawable.fibonacci_5,
-            R.drawable.fibonacci_8,
-            R.drawable.fibonacci_13,
-            R.drawable.fibonacci_21,
-            R.drawable.coffee
-    )
+    private var cardRessources: List<Int>? = null
 
-    override fun getItemCount(): Int = fibonacciCardResources.size
+    override fun getItemCount(): Int = cardRessources?.size ?: 0
 
     override fun onBindViewHolder(holder: CardViewHolder?, position: Int) {
-        holder?.bind(fibonacciCardResources[position])
+        cardRessources?.let {
+            holder?.bind(it[position])
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CardViewHolder {
-        return CardViewHolder(ImageView(parent?.context), cardClickListener)
+        val view = ImageView(parent?.context)
+        view.adjustViewBounds = true
+        return CardViewHolder(view, cardClickListener)
+    }
+
+    fun setCards(resourceList: List<Int>) {
+        cardRessources = resourceList
+        notifyDataSetChanged()
     }
 
 }
