@@ -38,3 +38,8 @@ proguard/
 *~
 *.swp
 *.hprof
+.idea/workspace.xml
+
+# Keystore files
+*.jks
+
