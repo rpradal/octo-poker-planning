@@ -16,6 +16,15 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            keyAlias 'octo-poker-planning'
+            keyPassword octoPlanningPokerKeyPassword
+            storeFile file('keystores/octo_keystore.jks')
+            storePassword octoPlanningPokerStorePassword
+        }
+    }
+
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
@@ -24,6 +33,7 @@ android {
 
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
