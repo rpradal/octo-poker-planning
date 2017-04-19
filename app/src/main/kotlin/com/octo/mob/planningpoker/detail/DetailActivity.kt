@@ -5,14 +5,15 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.transition.Transition
 import android.view.animation.AccelerateDecelerateInterpolator
+import com.octo.mob.planningpoker.R
 import com.octo.mob.planningpoker.transversal.BaseAnimatorListener
 import com.octo.mob.planningpoker.transversal.BaseTransitionListener
-import com.octo.mob.planningpoker.R
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
@@ -33,7 +34,12 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
         val res = intent.getIntExtra(SELECTED_CARD_BUNDLE_KEY, 0)
         bigCardImageView.setImageDrawable(ContextCompat.getDrawable(this, res))
-        window.sharedElementEnterTransition.addListener(SharedElementTransitionListener())
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.sharedElementEnterTransition.addListener(SharedElementTransitionListener())
+        } else {
+            getShowBackAnimator().start()
+        }
 
     }
 
@@ -41,7 +47,7 @@ class DetailActivity : AppCompatActivity() {
         val showFrontAnimator = getShowFrontAnimator()
         showFrontAnimator.addListener(object : BaseAnimatorListener() {
             override fun onAnimationEnd(p0: Animator?) {
-                finishAfterTransition()
+                finishAfterTransitionCompat()
             }
         })
         showFrontAnimator.start()
@@ -86,7 +92,17 @@ class DetailActivity : AppCompatActivity() {
 
     private fun addClickListeners() {
         backCardImageView.setOnClickListener { getShowFrontAnimator().start() }
-        bigCardImageView.setOnClickListener { finishAfterTransition() }
+        bigCardImageView.setOnClickListener {
+            finishAfterTransitionCompat()
+        }
+    }
+
+    private fun finishAfterTransitionCompat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition()
+        } else {
+            finish()
+        }
     }
 
     private fun removeClickListeners() {
