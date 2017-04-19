@@ -1,4 +1,4 @@
-package com.octo.mob.planningpoker
+package com.octo.mob.planningpoker.list
 
 import android.widget.ImageView
 

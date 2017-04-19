@@ -1,8 +1,9 @@
-package com.octo.mob.planningpoker
+package com.octo.mob.planningpoker.list
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.octo.mob.planningpoker.R
 
 class CardsAdapter(val cardClickListener: CardClickListener) : RecyclerView.Adapter<CardViewHolder>() {
 

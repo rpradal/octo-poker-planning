@@ -1,10 +1,14 @@
-package com.octo.mob.planningpoker
+package com.octo.mob.planningpoker.list
 
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.widget.ImageView
+import com.octo.mob.planningpoker.list.CardClickListener
+import com.octo.mob.planningpoker.list.CardsAdapter
+import com.octo.mob.planningpoker.R
+import com.octo.mob.planningpoker.detail.DetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 
