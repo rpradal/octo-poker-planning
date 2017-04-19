@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.transition.Transition
+import android.view.animation.AccelerateDecelerateInterpolator
 import com.octo.mob.planningpoker.transversal.BaseAnimatorListener
 import com.octo.mob.planningpoker.transversal.BaseTransitionListener
 import com.octo.mob.planningpoker.R
@@ -58,6 +59,8 @@ class DetailActivity : AppCompatActivity() {
 
         animatorSet.playSequentially(hideBackRotationAnimator, showFrontRotationAnimator)
         animatorSet.addListener(ClickDesactivatorAnimatorListener())
+        animatorSet.interpolator = AccelerateDecelerateInterpolator()
+
         return animatorSet
     }
 
@@ -76,6 +79,8 @@ class DetailActivity : AppCompatActivity() {
 
         animatorSet.playSequentially(hideFrontRotationAnimator, showBack, showBackRotationAnimation)
         animatorSet.addListener(ClickDesactivatorAnimatorListener())
+        animatorSet.interpolator = AccelerateDecelerateInterpolator()
+
         return animatorSet
     }
 
