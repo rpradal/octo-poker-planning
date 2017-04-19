@@ -2,6 +2,8 @@ package com.octo.mob.planningpoker
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -13,6 +15,12 @@ class DetailActivity : AppCompatActivity() {
     companion object {
         val SELECTED_CARD_BUNDLE_KEY = "SELECTED_CARD_BUNDLE_KEY"
         val ROTATION_ANITION_DURATION_MILLI = 400L
+
+        fun getIntent(context: Context, selectedDrawableRes: Int) : Intent {
+            val intent = Intent(context, DetailActivity::class.java)
+            intent.putExtra(DetailActivity.SELECTED_CARD_BUNDLE_KEY, selectedDrawableRes)
+            return intent
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
