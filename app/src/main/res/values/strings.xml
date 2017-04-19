@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">OctoPlanningPoker</string>
+    <string name="app_name" translatable="false">Octo Planning Poker</string>
+    <string name="selected_card_transition_name" translatable="false">selected_card</string>
 </resources>

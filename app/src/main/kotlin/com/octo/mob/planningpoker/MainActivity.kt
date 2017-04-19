@@ -1,7 +1,8 @@
 package com.octo.mob.planningpoker
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
@@ -28,8 +29,10 @@ class MainActivity : AppCompatActivity(), CardClickListener {
     }
 
     override fun onClick(drawableRes: Int, view: ImageView) {
-        selectedCardImageView.setImageDrawable(ContextCompat.getDrawable(this, drawableRes))
-        backCardImageView.visibility = View.VISIBLE
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, getString(R.string.selected_card_transition_name))
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(DetailActivity.SELECTED_CARD_BUNDLE_KEY, drawableRes)
+        startActivity(intent, options.toBundle())
     }
 }
 
