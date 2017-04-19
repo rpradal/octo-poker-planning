@@ -6,7 +6,7 @@ import android.widget.ImageView
 
 class CardsAdapter(val cardClickListener: CardClickListener) : RecyclerView.Adapter<CardViewHolder>() {
 
-    val fibonacciCardRessources = listOf(
+    val fibonacciCardResources = listOf(
             R.drawable.fibonacci_1,
             R.drawable.fibonacci_2,
             R.drawable.fibonacci_3,
@@ -17,10 +17,10 @@ class CardsAdapter(val cardClickListener: CardClickListener) : RecyclerView.Adap
             R.drawable.coffee
     )
 
-    override fun getItemCount(): Int = fibonacciCardRessources.size
+    override fun getItemCount(): Int = fibonacciCardResources.size
 
     override fun onBindViewHolder(holder: CardViewHolder?, position: Int) {
-        holder?.bind(fibonacciCardRessources[position])
+        holder?.bind(fibonacciCardResources[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CardViewHolder {
