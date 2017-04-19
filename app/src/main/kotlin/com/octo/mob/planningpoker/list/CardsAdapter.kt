@@ -17,7 +17,9 @@ class CardsAdapter(val cardClickListener: CardClickListener) : RecyclerView.Adap
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CardViewHolder {
-        return CardViewHolder(ImageView(parent?.context), cardClickListener)
+        val view = ImageView(parent?.context)
+        view.adjustViewBounds = true
+        return CardViewHolder(view, cardClickListener)
     }
 
     fun setCards(resourceList: List<Int>) {
