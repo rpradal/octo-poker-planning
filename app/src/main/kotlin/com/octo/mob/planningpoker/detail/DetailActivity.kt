@@ -5,6 +5,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -14,9 +15,11 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import com.octo.mob.planningpoker.R
 import com.octo.mob.planningpoker.transversal.BaseAnimatorListener
 import com.octo.mob.planningpoker.transversal.BaseTransitionListener
+import com.squareup.seismic.ShakeDetector
 import kotlinx.android.synthetic.main.activity_detail.*
 
-class DetailActivity : AppCompatActivity() {
+class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
+
 
     companion object {
         val SELECTED_CARD_BUNDLE_KEY = "SELECTED_CARD_BUNDLE_KEY"
@@ -29,6 +32,9 @@ class DetailActivity : AppCompatActivity() {
             return intent
         }
     }
+
+    val shakeDetector = ShakeDetector(this)
+    var isRevealStarted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +53,17 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        val sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+        shakeDetector.start(sensorManager)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        shakeDetector.stop()
+    }
+
     override fun onBackPressed() {
         if (bigCardImageView.rotationY != 0F) {
             val showFrontAnimator = getShowFrontAnimator()
@@ -58,6 +75,13 @@ class DetailActivity : AppCompatActivity() {
             showFrontAnimator.start()
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun hearShake() {
+        if (!isRevealStarted) {
+            getShowFrontAnimator().start()
+            isRevealStarted = true
         }
     }
 
