@@ -34,6 +34,7 @@ class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
     }
 
     val shakeDetector = ShakeDetector(this)
+    var isRevealStarted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +79,10 @@ class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
     }
 
     override fun hearShake() {
-        finishAfterTransitionCompat()
+        if (!isRevealStarted) {
+            getShowFrontAnimator().start()
+            isRevealStarted = true
+        }
     }
 
     private fun getShowFrontAnimator(): Animator {
