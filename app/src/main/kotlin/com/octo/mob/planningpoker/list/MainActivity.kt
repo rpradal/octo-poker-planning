@@ -7,11 +7,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MenuItem.SHOW_AS_ACTION_NEVER
 import android.widget.ImageView
+import com.octo.mob.planningpoker.BuildConfig
 import com.octo.mob.planningpoker.R
 import com.octo.mob.planningpoker.detail.DetailActivity
 import com.octo.mob.planningpoker.list.model.CardType
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.email
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         sortSubMenu?.item?.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         sortSubMenu?.add(Menu.NONE, R.id.menu_fibonacci, Menu.NONE, R.string.fibonacci_cards)
         sortSubMenu?.add(Menu.NONE, R.id.menu_tshirt, Menu.NONE, R.string.tshirt_cards)
+        menu?.add(Menu.NONE, R.id.menu_feedback, Menu.NONE, R.string.send_feedback)?.setShowAsAction(SHOW_AS_ACTION_NEVER)
         return true
     }
 
@@ -66,12 +70,20 @@ class MainActivity : AppCompatActivity() {
                 currentCardType = CardType.TSHIRT
             R.id.menu_fibonacci ->
                 currentCardType = CardType.FIBONACCI
+            R.id.menu_feedback ->
+                sendFeedbackEmail()
             else -> return super.onOptionsItemSelected(item)
 
         }
         cardsAdapter.setCards(currentCardType.resourceList)
         invalidateOptionsMenu()
         return true
+    }
+
+    private fun sendFeedbackEmail() {
+        val email = getString(R.string.app_feedback_recipient_email)
+        val subject = getString(R.string.app_feedback_subject_pattern, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
+        email(email, subject)
     }
 
     inner class SelectedCardListener : CardClickListener {
