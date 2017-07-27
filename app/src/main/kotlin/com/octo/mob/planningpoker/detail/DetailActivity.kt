@@ -50,7 +50,7 @@ class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
 
         bigCardImageView.cameraDistance = ROTATING_VIEW_CAMERA_DISTANCE
         backCardImageView.cameraDistance = ROTATING_VIEW_CAMERA_DISTANCE
-
+        shakeDetector.setSensitivity(ShakeDetector.SENSITIVITY_LIGHT)
     }
 
     override fun onResume() {

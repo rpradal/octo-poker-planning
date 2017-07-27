@@ -58,12 +58,20 @@ dependencies {
 
     compile "org.jetbrains.anko:anko-sdk15:$anko_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutine_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutine_version"
 
     testCompile 'junit:junit:4.12'
 }
 
 repositories {
     mavenCentral()
+}
+
+kotlin {
+    experimental {
+        coroutines 'enable'
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
