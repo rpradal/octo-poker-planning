@@ -13,17 +13,19 @@ import com.octo.mob.planningpoker.BuildConfig
 import com.octo.mob.planningpoker.R
 import com.octo.mob.planningpoker.detail.DetailActivity
 import com.octo.mob.planningpoker.list.model.CardType
+import com.octo.mob.planningpoker.settings.SettingsRepositoryImpl
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.defaultSharedPreferences
 import org.jetbrains.anko.email
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : CardsScreen, AppCompatActivity() {
 
     companion object {
         val GRID_COLUMN_NUMBER = 3
     }
 
-    private var currentCardType = CardType.FIBONACCI
+    private var cardsController: CardsController? = null
 
     private val cardsAdapter = CardsAdapter(SelectedCardListener())
 
@@ -34,7 +36,10 @@ class MainActivity : AppCompatActivity() {
         cardsRecyclerView.layoutManager = GridLayoutManager(this, GRID_COLUMN_NUMBER)
         cardsRecyclerView.adapter = cardsAdapter
 
-        cardsAdapter.setCards(currentCardType.resourceList)
+        val cardsPresenter = CardsPresenterImpl(this)
+        val settingsRepository = SettingsRepositoryImpl(defaultSharedPreferences)
+        cardsController = CardsController(cardsPresenter, settingsRepository)
+        cardsController!!.showDefaultCardType()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -48,6 +53,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        val currentCardType = cardsController!!.currentCardType
+
         val fibonacciMenu = menu?.findItem(R.id.menu_fibonacci)
         if (currentCardType == CardType.FIBONACCI) {
             fibonacciMenu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_done_black_24dp)
@@ -61,23 +68,27 @@ class MainActivity : AppCompatActivity() {
         } else {
             tshirtSizeMenu?.icon = null
         }
+
         return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_tshirt ->
-                currentCardType = CardType.TSHIRT
+                cardsController!!.showCardType(CardType.TSHIRT)
             R.id.menu_fibonacci ->
-                currentCardType = CardType.FIBONACCI
+                cardsController!!.showCardType(CardType.FIBONACCI)
             R.id.menu_feedback ->
                 sendFeedbackEmail()
             else -> return super.onOptionsItemSelected(item)
 
         }
-        cardsAdapter.setCards(currentCardType.resourceList)
         invalidateOptionsMenu()
         return true
+    }
+
+    override fun displayCardType(cardType: CardType) {
+        cardsAdapter.setCards(cardType.resourceList)
     }
 
     private fun sendFeedbackEmail() {
