@@ -12,14 +12,16 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.transition.Transition
 import android.view.animation.AccelerateDecelerateInterpolator
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.octo.mob.planningpoker.R
+import com.octo.mob.planningpoker.transversal.AnalyticsSender
+import com.octo.mob.planningpoker.transversal.AnalyticsSenderImpl
 import com.octo.mob.planningpoker.transversal.BaseAnimatorListener
 import com.octo.mob.planningpoker.transversal.BaseTransitionListener
 import com.squareup.seismic.ShakeDetector
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
-
 
     companion object {
         val SELECTED_CARD_BUNDLE_KEY = "SELECTED_CARD_BUNDLE_KEY"
@@ -33,8 +35,10 @@ class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
         }
     }
 
-    val shakeDetector = ShakeDetector(this)
-    var isRevealStarted = false
+    private val shakeDetector = ShakeDetector(this)
+    private var isRevealStarted = false
+    private lateinit var analyticsSender: AnalyticsSender
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +55,8 @@ class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
         bigCardImageView.cameraDistance = ROTATING_VIEW_CAMERA_DISTANCE
         backCardImageView.cameraDistance = ROTATING_VIEW_CAMERA_DISTANCE
 
+        analyticsSender = AnalyticsSenderImpl(FirebaseAnalytics.getInstance(this), this)
+
     }
 
     override fun onResume() {
@@ -60,8 +66,8 @@ class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
     }
 
     override fun onPause() {
-        super.onPause()
         shakeDetector.stop()
+        super.onPause()
     }
 
     override fun onBackPressed() {
@@ -123,8 +129,12 @@ class DetailActivity : AppCompatActivity(), ShakeDetector.Listener {
     }
 
     private fun addClickListeners() {
-        backCardImageView.setOnClickListener { getShowFrontAnimator().start() }
+        backCardImageView.setOnClickListener {
+            analyticsSender.onEstimationRevealed()
+            getShowFrontAnimator().start()
+        }
         bigCardImageView.setOnClickListener {
+            analyticsSender.onEstimationDismissed()
             finishAfterTransitionCompat()
         }
     }

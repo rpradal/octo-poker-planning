@@ -9,10 +9,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MenuItem.SHOW_AS_ACTION_NEVER
 import android.widget.ImageView
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.octo.mob.planningpoker.BuildConfig
 import com.octo.mob.planningpoker.R
 import com.octo.mob.planningpoker.detail.DetailActivity
-import com.octo.mob.planningpoker.list.model.CardType
+import com.octo.mob.planningpoker.list.model.Card
+import com.octo.mob.planningpoker.list.model.CardDeck
+import com.octo.mob.planningpoker.transversal.AnalyticsSender
+import com.octo.mob.planningpoker.transversal.AnalyticsSenderImpl
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.email
 
@@ -23,9 +27,10 @@ class MainActivity : AppCompatActivity() {
         val GRID_COLUMN_NUMBER = 3
     }
 
-    private var currentCardType = CardType.FIBONACCI
+    private var currentCardType = CardDeck.FIBONACCI
 
     private val cardsAdapter = CardsAdapter(SelectedCardListener())
+    private lateinit var analyticsSender: AnalyticsSender
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         cardsRecyclerView.adapter = cardsAdapter
 
         cardsAdapter.setCards(currentCardType.resourceList)
+
+        analyticsSender = AnalyticsSenderImpl(FirebaseAnalytics.getInstance(this), this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -49,14 +56,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
         val fibonacciMenu = menu?.findItem(R.id.menu_fibonacci)
-        if (currentCardType == CardType.FIBONACCI) {
+        if (currentCardType == CardDeck.FIBONACCI) {
             fibonacciMenu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_done_black_24dp)
         } else {
             fibonacciMenu?.icon = null
         }
 
         val tshirtSizeMenu = menu?.findItem(R.id.menu_tshirt)
-        if (currentCardType == CardType.TSHIRT) {
+        if (currentCardType == CardDeck.TSHIRT) {
             tshirtSizeMenu?.icon = ContextCompat.getDrawable(this, R.drawable.ic_done_black_24dp)
         } else {
             tshirtSizeMenu?.icon = null
@@ -67,15 +74,19 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_tshirt ->
-                currentCardType = CardType.TSHIRT
+                currentCardType = CardDeck.TSHIRT
             R.id.menu_fibonacci ->
-                currentCardType = CardType.FIBONACCI
-            R.id.menu_feedback ->
+                currentCardType = CardDeck.FIBONACCI
+            R.id.menu_feedback -> {
+                analyticsSender.onSendFeedBack()
                 sendFeedbackEmail()
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
 
         }
         cardsAdapter.setCards(currentCardType.resourceList)
+        analyticsSender.onCardDeckChanged(currentCardType)
         invalidateOptionsMenu()
         return true
     }
@@ -87,10 +98,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     inner class SelectedCardListener : CardClickListener {
-        override fun onClick(drawableRes: Int, clickedView: ImageView) {
+        override fun onClick(card: Card, clickedView: ImageView) {
             val transitionName = getString(R.string.selected_card_transition_name)
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this@MainActivity, clickedView, transitionName)
-            startActivity(DetailActivity.getIntent(this@MainActivity, drawableRes), options.toBundle())
+            analyticsSender.onCardSelected(card)
+            startActivity(DetailActivity.getIntent(this@MainActivity, card.resource), options.toBundle())
         }
     }
 

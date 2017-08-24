@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="on_feedback">envoi_feedback</string>
+    <string name="on_estimation_dismissed">disparition_estimation</string>
+    <string name="on_estimation_revealed">revelation_carte</string>
+
+    <string name="card_one">1</string>
+    <string name="card_two">2</string>
+    <string name="card_three">3</string>
+    <string name="card_five">5</string>
+    <string name="card_height">8</string>
+    <string name="card_thirteen">13</string>
+    <string name="card_twenty_one">21</string>
+
+    <string name="card_xs">xs</string>
+    <string name="card_s">s</string>
+    <string name="card_m">m</string>
+    <string name="card_l">l</string>
+    <string name="card_xl">xl</string>
+
+    <string name="card_coffee">cafe</string>
+    <string name="on_card_choice">choix_carte</string>
+    <string name="estimation_key">estimation</string>
+    <string name="deck_fibonacci">fibonacci</string>
+    <string name="deck_tshirt">tshirt</string>
+    <string name="on_deck_changed">selection_mode</string>
+    <string name="deck_type_key">mode</string>
+
+</resources>
