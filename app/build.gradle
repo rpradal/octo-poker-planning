@@ -5,13 +5,13 @@ apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
 
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
 
     defaultConfig {
         applicationId "com.octo.mob.planningpoker"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode versionMajor * 100000000 + versionMinor * 10000000 + versionPatch * 10000
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -47,14 +47,16 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    final def appCompatVersion = "26.0.1"
+    compile "com.android.support:appcompat-v7:$appCompatVersion"
+    compile "com.android.support:recyclerview-v7:$appCompatVersion"
 
     compile 'com.squareup:seismic:1.0.2'
 
-    releaseCompile 'com.google.firebase:firebase-crash:10.2.6'
-    compile 'com.google.firebase:firebase-core:10.2.6'
-    compile 'com.google.firebase:firebase-perf:10.2.6'
+    final def firebaseVersion = "11.2.0"
+    releaseCompile "com.google.firebase:firebase-crash:$firebaseVersion"
+    compile "com.google.firebase:firebase-core:$firebaseVersion"
+    compile "com.google.firebase:firebase-perf:$firebaseVersion"
 
     compile "org.jetbrains.anko:anko-sdk15:$anko_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
