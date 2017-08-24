@@ -30,7 +30,7 @@ task clean(type: Delete) {
 }
 
 ext {
-    versionMajor = 0
+    versionMajor = 1
     versionMinor = 0
-    versionPatch = 3
+    versionPatch = 0
 }
